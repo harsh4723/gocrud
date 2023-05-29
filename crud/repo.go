@@ -1,4 +1,4 @@
-package repo
+package crud
 
 import (
 	"context"
@@ -6,9 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"accountservice/crud/service"
-
-	"github.com/go-kit/kit/log"
+	"github.com/unbxd/go-base/utils/log"
 )
 
 var (
@@ -22,14 +20,14 @@ type repo struct {
 	logger log.Logger
 }
 
-func NewRepo(db *sql.DB, logger log.Logger) (service.Repository, error) {
+func NewRepo(db *sql.DB, logger log.Logger) (Repository, error) {
 	return &repo{
 		db:     db,
-		logger: log.With(logger, "repo", "mongodb"),
+		logger: logger,
 	}, nil
 }
 
-func (repo *repo) CreateCustomer(ctx context.Context, customer service.Customer) error {
+func (repo *repo) CreateCustomer(ctx context.Context, customer Customer) error {
 	_, err := repo.db.ExecContext(ctx, "INSERT INTO Customer(customerid, email, phone) VALUES (?, ?, ?)", customer.Customerid, customer.Email, customer.Phone)
 	if err != nil {
 		fmt.Println("Error occured inside CreateCustomer in repo")
@@ -40,7 +38,7 @@ func (repo *repo) CreateCustomer(ctx context.Context, customer service.Customer)
 	return nil
 }
 func (repo *repo) GetCustomerById(ctx context.Context, id string) (interface{}, error) {
-	customer := service.Customer{}
+	customer := Customer{}
 
 	err := repo.db.QueryRowContext(ctx, "SELECT c.customerid,c.email,c.phone FROM Customer as c where c.customerid = ?", id).Scan(&customer.Customerid, &customer.Email, &customer.Phone)
 	if err != nil {
@@ -52,7 +50,7 @@ func (repo *repo) GetCustomerById(ctx context.Context, id string) (interface{}, 
 	return customer, nil
 }
 func (repo *repo) GetAllCustomers(ctx context.Context) (interface{}, error) {
-	customer := service.Customer{}
+	customer := Customer{}
 	var res []interface{}
 	rows, err := repo.db.QueryContext(ctx, "SELECT c.customerid,c.email,c.phone FROM Customer as c ")
 	if err != nil {
@@ -82,7 +80,7 @@ func (repo *repo) DeleteCustomer(ctx context.Context, id string) (string, error)
 	}
 	return "Successfully deleted ", nil
 }
-func (repo *repo) UpdateCustomer(ctx context.Context, customer service.Customer) (string, error) {
+func (repo *repo) UpdateCustomer(ctx context.Context, customer Customer) (string, error) {
 	res, err := repo.db.ExecContext(ctx, "UPDATE Customer as c SET c.Email=? , c.Phone = ? WHERE c.customerid = ?", customer.Email, customer.Phone, customer.Customerid)
 	if err != nil {
 		return "", err

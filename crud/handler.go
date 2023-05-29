@@ -1,18 +1,18 @@
-package handler
+package crud
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 
-	"accountservice/crud/service"
+	net_http "net/http"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/gorilla/mux"
+	"github.com/unbxd/go-base/kit/transport/http"
 )
 
-func MakeCreateCustomerEndpoint(s service.AccountService) endpoint.Endpoint {
+func MakeCreateCustomerEndpoint(s AccountService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateCustomerRequest)
 		msg, err := s.CreateCustomer(ctx, req.customer)
@@ -20,7 +20,7 @@ func MakeCreateCustomerEndpoint(s service.AccountService) endpoint.Endpoint {
 	}
 }
 
-func MakeGetCustomerByIdEndpoint(s service.AccountService) endpoint.Endpoint {
+func MakeGetCustomerByIdEndpoint(s AccountService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetCustomerByIdRequest)
 		customerDetails, err := s.GetCustomerById(ctx, req.Id)
@@ -31,7 +31,7 @@ func MakeGetCustomerByIdEndpoint(s service.AccountService) endpoint.Endpoint {
 	}
 }
 
-func MakeGetAllCustomersEndpoint(s service.AccountService) endpoint.Endpoint {
+func MakeGetAllCustomersEndpoint(s AccountService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		customerDetails, err := s.GetAllCustomers(ctx)
 		if err != nil {
@@ -41,7 +41,7 @@ func MakeGetAllCustomersEndpoint(s service.AccountService) endpoint.Endpoint {
 	}
 }
 
-func MakeDeleteCustomerEndpoint(s service.AccountService) endpoint.Endpoint {
+func MakeDeleteCustomerEndpoint(s AccountService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(DeleteCustomerRequest)
 		msg, err := s.DeleteCustomer(ctx, req.Customerid)
@@ -51,7 +51,7 @@ func MakeDeleteCustomerEndpoint(s service.AccountService) endpoint.Endpoint {
 		return DeleteCustomerResponse{Msg: msg, Err: nil}, nil
 	}
 }
-func MakeUpdateCustomerendpoint(s service.AccountService) endpoint.Endpoint {
+func MakeUpdateCustomerendpoint(s AccountService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateCustomerRequest)
 		msg, err := s.UpdateCustomer(ctx, req.customer)
@@ -59,7 +59,41 @@ func MakeUpdateCustomerendpoint(s service.AccountService) endpoint.Endpoint {
 	}
 }
 
-func DecodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{}, error) {
+func CreateAccountHandler(service AccountService) http.Handler {
+	return http.Handler(MakeCreateCustomerEndpoint(service))
+}
+
+func GetByCustomerIdHandler(service AccountService) http.Handler {
+	return http.Handler(MakeGetCustomerByIdEndpoint(service))
+}
+
+func GetAllCustomersHandler(service AccountService) http.Handler {
+	return http.Handler(MakeGetAllCustomersEndpoint(service))
+}
+
+func DeleteCustomerHandler(service AccountService) http.Handler {
+	return http.Handler(MakeDeleteCustomerEndpoint(service))
+}
+
+func UpdateCustomerHandler(service AccountService) http.Handler {
+	return http.Handler(MakeUpdateCustomerendpoint(service))
+}
+
+func MakeCreateAccountHanlerOption(opts []http.HandlerOption) []http.HandlerOption {
+	return append([]http.HandlerOption{
+		http.HandlerWithDecoder(DecodeCreateCustomerRequest),
+		http.HandlerWithEncoder(EncodeResponse),
+	}, opts...)
+}
+
+func MakeGetAllCustomersHandlerOption(opts []http.HandlerOption) []http.HandlerOption {
+	return append([]http.HandlerOption{
+		http.HandlerWithDecoder(DecodeGetAllCustomersRequest),
+		http.HandlerWithEncoder(EncodeResponse),
+	}, opts...)
+}
+
+func DecodeCreateCustomerRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	var req CreateCustomerRequest
 	fmt.Println("-------->>>>into Decoding")
 	if err := json.NewDecoder(r.Body).Decode(&req.customer); err != nil {
@@ -68,7 +102,7 @@ func DecodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{
 	return req, nil
 }
 
-func DecodeGetCustomerByIdRequest(_ context.Context, r *http.Request) (interface{}, error) {
+func DecodeGetCustomerByIdRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	var req GetCustomerByIdRequest
 	fmt.Println("-------->>>>into GetById Decoding")
 	vars := mux.Vars(r)
@@ -77,12 +111,12 @@ func DecodeGetCustomerByIdRequest(_ context.Context, r *http.Request) (interface
 	}
 	return req, nil
 }
-func DecodeGetAllCustomersRequest(_ context.Context, r *http.Request) (interface{}, error) {
+func DecodeGetAllCustomersRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	fmt.Println("-------->>>> Into GETALL Decoding")
 	var req GetAllCustomersRequest
 	return req, nil
 }
-func DecodeDeleteCustomerRequest(_ context.Context, r *http.Request) (interface{}, error) {
+func DecodeDeleteCustomerRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	fmt.Println("-------->>>> Into Delete Decoding")
 	var req DeleteCustomerRequest
 	vars := mux.Vars(r)
@@ -91,7 +125,7 @@ func DecodeDeleteCustomerRequest(_ context.Context, r *http.Request) (interface{
 	}
 	return req, nil
 }
-func DecodeUpdateCustomerRequest(_ context.Context, r *http.Request) (interface{}, error) {
+func DecodeUpdateCustomerRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	fmt.Println("-------->>>> Into Update Decoding")
 	var req UpdateCustomerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req.customer); err != nil {
@@ -100,46 +134,8 @@ func DecodeUpdateCustomerRequest(_ context.Context, r *http.Request) (interface{
 	return req, nil
 }
 
-func EncodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+func EncodeResponse(_ context.Context, w net_http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	fmt.Println("into Encoding <<<<<<----------------")
 	return json.NewEncoder(w).Encode(response)
 }
-
-type (
-	CreateCustomerRequest struct {
-		customer service.Customer
-	}
-	CreateCustomerResponse struct {
-		Msg string `json:"msg"`
-		Err error  `json:"error,omitempty"`
-	}
-	GetCustomerByIdRequest struct {
-		Id string `json:"customerid"`
-	}
-	GetCustomerByIdResponse struct {
-		Customer interface{} `json:"customer,omitempty"`
-		Err      string      `json:"error,omitempty"`
-	}
-	GetAllCustomersRequest struct{}
-
-	GetAllCustomersResponse struct {
-		Customer interface{} `json:"customer,omitempty"`
-		Err      string      `json:"error,omitempty"`
-	}
-	DeleteCustomerRequest struct {
-		Customerid string `json:"customerid"`
-	}
-
-	DeleteCustomerResponse struct {
-		Msg string `json:"response"`
-		Err error  `json:"error,omitempty"`
-	}
-	UpdateCustomerRequest struct {
-		customer service.Customer
-	}
-	UpdateCustomerResponse struct {
-		Msg string `json:"status,omitempty"`
-		Err error  `json:"error,omitempty"`
-	}
-)

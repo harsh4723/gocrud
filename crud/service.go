@@ -1,10 +1,9 @@
-package service
+package crud
 
 import (
 	"context"
 
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
+	"github.com/unbxd/go-base/utils/log"
 )
 
 type Customer struct {
@@ -21,7 +20,6 @@ type AccountService interface {
 	DeleteCustomer(ctx context.Context, id string) (string, error)
 }
 
-// Describes the AccountServiceStruct for repository interaction
 type Repository interface {
 	CreateCustomer(ctx context.Context, customer Customer) error
 	GetCustomerById(ctx context.Context, id string) (interface{}, error)
@@ -31,19 +29,12 @@ type Repository interface {
 }
 
 type AccountServiceStruct struct {
-	repository Repository
 	logger     log.Logger
-}
-
-func NewService(rep Repository, logger log.Logger) AccountService {
-	return &AccountServiceStruct{
-		repository: rep,
-		logger:     logger,
-	}
+	repository Repository
 }
 
 func (s AccountServiceStruct) CreateCustomer(ctx context.Context, customer Customer) (string, error) {
-	logger := log.With(s.logger, "method", "Create")
+	logger := s.logger
 	var msg = "success"
 	customerDetails := Customer{
 		Customerid: customer.Customerid,
@@ -51,49 +42,49 @@ func (s AccountServiceStruct) CreateCustomer(ctx context.Context, customer Custo
 		Phone:      customer.Phone,
 	}
 	if err := s.repository.CreateCustomer(ctx, customerDetails); err != nil {
-		level.Error(logger).Log("err from repo is ", err)
+		logger.Error("create customer err from repo is ", log.Error(err))
 		return "", err
 	}
 	return msg, nil
 }
 
 func (s AccountServiceStruct) GetCustomerById(ctx context.Context, id string) (interface{}, error) {
-	logger := log.With(s.logger, "method", "GetcustomerById")
+	logger := s.logger
 
 	var customer interface{}
 	var empty interface{}
 	customer, err := s.repository.GetCustomerById(ctx, id)
 	if err != nil {
-		level.Error(logger).Log("err ", err)
+		logger.Error("get customer by id err from repo is ", log.Error(err))
 		return empty, err
 	}
 	return customer, nil
 }
 
 func (s AccountServiceStruct) GetAllCustomers(ctx context.Context) (interface{}, error) {
-	logger := log.With(s.logger, "method", "GetAllcustomers")
+	logger := s.logger
 	var customer interface{}
 	var empty interface{}
 	customer, err := s.repository.GetAllCustomers(ctx)
 	if err != nil {
-		level.Error(logger).Log("err ", err)
+		logger.Error("get all customer err from repo is ", log.Error(err))
 		return empty, err
 	}
 	return customer, nil
 }
 
 func (s AccountServiceStruct) DeleteCustomer(ctx context.Context, id string) (string, error) {
-	logger := log.With(s.logger, "method", "DeleteCustomer")
+	logger := s.logger
 	msg, err := s.repository.DeleteCustomer(ctx, id)
 	if err != nil {
-		level.Error(logger).Log("err ", err)
+		logger.Error("delete customer by id err from repo is ", log.Error(err))
 		return "", err
 	}
 	return msg, nil
 }
 
 func (s AccountServiceStruct) UpdateCustomer(ctx context.Context, customer Customer) (string, error) {
-	logger := log.With(s.logger, "method", "Create")
+	logger := s.logger
 	var msg = "success"
 	customerDetails := Customer{
 		Customerid: customer.Customerid,
@@ -102,8 +93,16 @@ func (s AccountServiceStruct) UpdateCustomer(ctx context.Context, customer Custo
 	}
 	msg, err := s.repository.UpdateCustomer(ctx, customerDetails)
 	if err != nil {
-		level.Error(logger).Log("err from repo is ", err)
+		logger.Error("update customer err from repo is ", log.Error(err))
 		return "", err
 	}
 	return msg, nil
+}
+
+func newSvc(
+	l log.Logger,
+	r Repository,
+) AccountService {
+
+	return &AccountServiceStruct{l, r}
 }
