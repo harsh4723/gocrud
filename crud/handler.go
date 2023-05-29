@@ -93,6 +93,27 @@ func MakeGetAllCustomersHandlerOption(opts []http.HandlerOption) []http.HandlerO
 	}, opts...)
 }
 
+func MakeGetCustomerByIdHandlerOption(opts []http.HandlerOption) []http.HandlerOption {
+	return append([]http.HandlerOption{
+		http.HandlerWithDecoder(DecodeGetCustomerByIdRequest),
+		http.HandlerWithEncoder(EncodeResponse),
+	})
+}
+
+func MakeDeleteCustomerHandlerOption(opts []http.HandlerOption) []http.HandlerOption {
+	return append([]http.HandlerOption{
+		http.HandlerWithDecoder(DecodeDeleteCustomerRequest),
+		http.HandlerWithEncoder(EncodeResponse),
+	})
+}
+
+func MakeUpdateCustomerHandlerOption(opts []http.HandlerOption) []http.HandlerOption {
+	return append([]http.HandlerOption{
+		http.HandlerWithDecoder(DecodeUpdateCustomerRequest),
+		http.HandlerWithEncoder(EncodeResponse),
+	})
+}
+
 func DecodeCreateCustomerRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	var req CreateCustomerRequest
 	fmt.Println("-------->>>>into Decoding")
