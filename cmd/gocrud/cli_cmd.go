@@ -8,7 +8,7 @@ var (
 	start = &cli.Command{
 		Name:    "start",
 		Aliases: []string{"s"},
-		Usage:   "starts the hodor server",
+		Usage:   "starts the gocrud server",
 		Before:  beforeStart,
 		Action:  actionStart,
 	}

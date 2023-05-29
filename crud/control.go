@@ -19,7 +19,7 @@ func (c *Control) Bind(ht *http.Transport, opts ...http.HandlerOption) {
 	)
 
 	ht.POST(
-		"/account/getAll",
+		"/account/update",
 		UpdateCustomerHandler(c.service),
 		MakeUpdateCustomerHandlerOption(opts)...,
 	)
@@ -30,12 +30,12 @@ func (c *Control) Bind(ht *http.Transport, opts ...http.HandlerOption) {
 		MakeGetAllCustomersHandlerOption(opts)...,
 	)
 	ht.GET(
-		"/account/{customerid}",
+		"/account/:customerid",
 		GetByCustomerIdHandler(c.service),
 		MakeGetCustomerByIdHandlerOption(opts)...,
 	)
 	ht.DELETE(
-		"/account/{customerid}",
+		"/account/:customerid",
 		DeleteCustomerHandler(c.service),
 		MakeDeleteCustomerHandlerOption(opts)...,
 	)

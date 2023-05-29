@@ -20,10 +20,10 @@ func main() {
 		Commands: commands,
 	}).Run(os.Args)
 	if err != nil {
-		fmt.Println("Something Went Wrong. Failed to start Hodor.: " + err.Error())
+		fmt.Println("Something Went Wrong. Failed to start Gocrud.: " + err.Error())
 		log.Fatal(
 			fmt.Sprintf(
-				"-- \nfailed to start hodor. \n--\n Caused By:\n%s\n--",
+				"-- \nfailed to start Gocrud. \n--\n Caused By:\n%s\n--",
 				errorstack(err.Error()),
 			),
 		)

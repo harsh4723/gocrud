@@ -8,7 +8,6 @@ import (
 	net_http "net/http"
 
 	"github.com/go-kit/kit/endpoint"
-	"github.com/gorilla/mux"
 	"github.com/unbxd/go-base/kit/transport/http"
 )
 
@@ -126,9 +125,10 @@ func DecodeCreateCustomerRequest(_ context.Context, r *net_http.Request) (interf
 func DecodeGetCustomerByIdRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	var req GetCustomerByIdRequest
 	fmt.Println("-------->>>>into GetById Decoding")
-	vars := mux.Vars(r)
+	// vars := mux.Vars(r)
+	customerid := http.Parameters(r).ByName("customerid")
 	req = GetCustomerByIdRequest{
-		Id: vars["customerid"],
+		Id: customerid,
 	}
 	return req, nil
 }
@@ -140,9 +140,10 @@ func DecodeGetAllCustomersRequest(_ context.Context, r *net_http.Request) (inter
 func DecodeDeleteCustomerRequest(_ context.Context, r *net_http.Request) (interface{}, error) {
 	fmt.Println("-------->>>> Into Delete Decoding")
 	var req DeleteCustomerRequest
-	vars := mux.Vars(r)
+	//vars := mux.Vars(r)
+	customerid := http.Parameters(r).ByName("customerid")
 	req = DeleteCustomerRequest{
-		Customerid: vars["customerid"],
+		Customerid: customerid,
 	}
 	return req, nil
 }

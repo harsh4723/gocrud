@@ -5,13 +5,9 @@ import "github.com/urfave/cli/v2"
 func Flags() []cli.Flag {
 	var flags = []cli.Flag{}
 
-	// flags = append(flags, appflags...)
-	// flags = append(flags, dbconnflags...)
-	// flags = append(flags, cacheconnflags...)
-	// flags = append(flags, httpflags...)
-	// flags = append(flags, logflags...)
-	// flags = append(flags, metricflags...)
-	// flags = append(flags, productserviceflags...)
+	flags = append(flags, appflags...)
+	flags = append(flags, httpflags...)
+	flags = append(flags, logflags...)
 
 	return flags
 }
