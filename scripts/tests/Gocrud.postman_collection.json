@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "2bc3a2c1-ef58-4630-8402-8fa042f98794",
+		"name": "Gocrud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27674244"
+	},
+	"item": [
+		{
+			"name": "get_all_customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/account/getAll",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"customerid\": \"145\",\n    \"email\": \"qww@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/account",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_customer_by_id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"customer\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/account/123",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/account/119",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"119"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerid\": \"145\",\n    \"email\": \"adhd@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/account/update",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
