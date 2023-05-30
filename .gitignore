@@ -1,3 +1,4 @@
 /vendor
 main
 cli_cmd
+.idea/

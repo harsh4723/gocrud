@@ -7,7 +7,7 @@ import (
 
 	net_http "net/http"
 
-	"github.com/go-kit/kit/endpoint"
+	"github.com/unbxd/go-base/kit/endpoint"
 	"github.com/unbxd/go-base/kit/transport/http"
 )
 

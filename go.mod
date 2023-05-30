@@ -3,8 +3,6 @@ module accountservice
 go 1.20
 
 require (
-	github.com/go-kit/kit v0.12.0
-	github.com/gorilla/mux v1.8.0
 	github.com/pkg/errors v0.9.1
 	github.com/unbxd/go-base v1.2.8
 	github.com/urfave/cli/v2 v2.25.4
@@ -20,6 +18,7 @@ require (
 	github.com/elastic/go-licenser v0.4.0 // indirect
 	github.com/elastic/go-sysinfo v1.7.1 // indirect
 	github.com/elastic/go-windows v1.0.1 // indirect
+	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
