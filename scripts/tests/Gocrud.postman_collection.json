@@ -25,11 +25,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/account/getAll",
+					"raw": "{{gocrud.host}}/account/getAll",
 					"host": [
-						"localhost"
+						"{{gocrud.host}}"
 					],
-					"port": "8000",
 					"path": [
 						"account",
 						"getAll"
@@ -58,7 +57,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"customerid\": \"145\",\n    \"email\": \"qww@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
+					"raw": "{\n   \"customerid\": \"151\",\n    \"email\": \"ert@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -66,11 +65,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8000/account",
+					"raw": "{{gocrud.host}}/account",
 					"host": [
-						"localhost"
+						"{{gocrud.host}}"
 					],
-					"port": "8000",
 					"path": [
 						"account"
 					]
@@ -100,11 +98,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/account/123",
+					"raw": "{{gocrud.host}}/account/123",
 					"host": [
-						"localhost"
+						"{{gocrud.host}}"
 					],
-					"port": "8000",
 					"path": [
 						"account",
 						"123"
@@ -132,14 +129,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/account/119",
+					"raw": "{{gocrud.host}}/account/156",
 					"host": [
-						"localhost"
+						"{{gocrud.host}}"
 					],
-					"port": "8000",
 					"path": [
 						"account",
-						"119"
+						"156"
 					]
 				}
 			},
@@ -165,7 +161,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"customerid\": \"145\",\n    \"email\": \"adhd@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
+					"raw": "{\n    \"customerid\": \"145\",\n    \"email\": \"rtyi@gamil.com\",\n    \"phone\": \"78657887991\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -173,11 +169,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8000/account/update",
+					"raw": "{{gocrud.host}}/account/update",
 					"host": [
-						"localhost"
+						"{{gocrud.host}}"
 					],
-					"port": "8000",
 					"path": [
 						"account",
 						"update"
