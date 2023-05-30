@@ -18,7 +18,7 @@ func (c *Control) Bind(ht *http.Transport, opts ...http.HandlerOption) {
 		MakeCreateAccountHanlerOption(opts)...,
 	)
 
-	ht.POST(
+	ht.PUT(
 		"/account/update",
 		UpdateCustomerHandler(c.service),
 		MakeUpdateCustomerHandlerOption(opts)...,
