@@ -10,9 +10,7 @@ import (
 )
 
 var (
-	RepoErr             = errors.New("Unable to handle Repo Request")
-	ErrIdNotFound       = errors.New("Id not found")
-	ErrPhonenumNotFound = errors.New("Phone num is not found")
+	ErrIdNotFound = errors.New("id not found")
 )
 
 type repo struct {

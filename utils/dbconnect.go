@@ -14,7 +14,7 @@ func GetDBconn() *sql.DB {
 	dbName := "AccountCrudDatabase"
 	fmt.Println("conn info:", dbName)
 	db, err := sql.Open("mysql",
-		"root:@tcp(127.0.0.1:3306)/AccountCrudDatabase")
+		"root:root@tcp(mysql:3306)/AccountCrudDatabase")
 	if err != nil {
 		panic(err.Error())
 	}
