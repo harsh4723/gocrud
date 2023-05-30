@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine
+FROM golang:1.19-alpine
 
 RUN apk update && apk add --no-cache git
 
@@ -6,8 +6,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build cmd/gocrud/main.go
+RUN go build cmd/gocrud/*.go
 
 EXPOSE 8000
 
-CMD ["./main"]
+CMD ["./cli_cmd","start"]
